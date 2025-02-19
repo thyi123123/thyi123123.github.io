@@ -1,7 +1,11 @@
 <!DOCTYPE html>
+<script>
 
-    </script>
-    <!DOCTYPE html>
+if (localStorage.getItem("admin") !== "true") {
+    alert("Access denied!");
+    window.location.href = "login.html";}
+
+    
     <html lang="en">
     <head>
     <meta charset="UTF-8">
