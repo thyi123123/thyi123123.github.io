@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #35424a;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .order-list {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .order-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .order-btn {
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .process-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .process-btn:hover {
+            background-color: #45a049;
+        }
+        .shipped-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+        .shipped-btn:hover {
+            background-color: #0b7dda;
+        }
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #ff6666;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Order Management</h1>
+</header>
+
+<div class="container">
+    <div class="order-list">
+        <h3>Order Details</h3>
+        <p><strong>Customer Name:</strong> <span id="customer-name"></span></p>
+        <div id="order-items">
+            <!-- Order details will be listed here -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to load the checkout cart and customer name from localStorage
+    function loadOrder() {
+        const cart = JSON.parse(localStorage.getItem('checkout-cart')) || [];
+        const customerName = localStorage.getItem('customer-name') || "Unknown";
+        const orderItems = document.getElementById('order-items');
+        const customerNameElem = document.getElementById('customer-name');
+        customerNameElem.textContent = customerName;
+
+        orderItems.innerHTML = '';
+
+        if (cart.length === 0) {
+            orderItems.innerHTML = '<p>No items to display. It seems your cart is empty.</p>';
+        } else {
+            let total = 0;
+            cart.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.classList.add('order-item');
+                div.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        ₪${item.price} x ${item.quantity}
+                    </div>
+                    <div>
+                        <button class="order-btn process-btn" onclick="markAsProcessed(${index})">Mark as Processed</button>
+                        <button class="order-btn shipped-btn" onclick="markAsShipped(${index})">Mark as Shipped</button>
+                        <button class="order-btn delete-btn" onclick="removeOrder(${index})">Delete</button>
+                    </div>
+                `;
+                orderItems.appendChild(div);
+                total += item.price * item.quantity;
+            });
+            const totalDiv = document.createElement('div');
+            totalDiv.classList.add('order-item');
+            totalDiv.innerHTML = `<strong>Total: ₪${total.toFixed(2)}</strong>`;
+            orderItems.appendChild(totalDiv);
+        }
+    }
+
+    // Function to mark an order as processed
+    function markAsProcessed(index) {
+        alert('Order ' + (index + 1) + ' marked as processed.');
+    }
+
+    // Function to mark an order as shipped
+    function markAsShipped(index) {
+        alert('Order ' + (index + 1) + ' marked as shipped.');
+    }
+
+    // Function to remove an order from the list
+    function removeOrder(index) {
+        const cart = JSON.parse(localStorage.getItem('checkout-cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('checkout-cart', JSON.stringify(cart));
+        loadOrder();
+    }
+
+    // Load order details on page load
+    loadOrder();
+</script>
+
+</body>
+</html>
