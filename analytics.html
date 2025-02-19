@@ -42,57 +42,69 @@
             display: flex;
             justify-content: space-around;
             margin-top: 30px;
+            flex-wrap: wrap; /* Make it responsive */
         }
         .stats-card {
-            width: 30%;
+            flex: 1 1 30%; /* Responsive flexbox */
             background: #ffffff;
             padding: 20px;
             text-align: center;
             border: 1px solid #dddddd;
             border-radius: 5px;
+            margin: 10px; /* Add margin for spacing */
+        }
+        @media (max-width: 768px) {
+            .stats-card {
+                flex: 1 1 100%; /* Stack cards on small screens */
+            }
         }
     </style>
 </head>
 <body>
-
 <header>
     <h1>Website Analytics</h1>
 </header>
-
-<div class="container">
+<main class="container">
     <div class="card">
         <h3>Website Traffic</h3>
         <p>View the number of visitors in real-time.</p>
     </div>
-    
     <!-- Display Analytics Statistics -->
     <div class="stats-container">
         <div class="stats-card">
             <h3>Total Visitors</h3>
-            <p id="total-visitors">1,234</p>
+            <p id="total-visitors">Loading...</p>
         </div>
         <div class="stats-card">
             <h3>Total Sales</h3>
-            <p id="total-sales">567</p>
+            <p id="total-sales">Loading...</p>
         </div>
         <div class="stats-card">
             <h3>Products Sold</h3>
-            <p id="products-sold">890</p>
+            <p id="products-sold">Loading...</p>
         </div>
     </div>
-</div>
-
+</main>
 <script>
-    // You can replace these static values with real data pulled from a back-end server.
-    const visitors = 1234;
-    const sales = 567;
-    const productsSold = 890;
-
-    document.getElementById("total-visitors").textContent = visitors;
-    document.getElementById("total-sales").textContent = sales;
-    document.getElementById("products-sold").textContent = productsSold;
+    // Fetch real data from a backend server
+    fetch('http://localhost:3000/api/analytics') // Replace with your actual API endpoint
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("total-visitors").textContent = data.totalVisitors || 0;
+            document.getElementById("total-sales").textContent = data.totalSales || 0;
+            document.getElementById("products-sold").textContent = data.productsSold || 0;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            document.getElementById("total-visitors").textContent = "Error loading data";
+            document.getElementById("total-sales").textContent = "Error loading data";
+            document.getElementById("products-sold").textContent = "Error loading data";
+        });
 </script>
-
-
 </body>
 </html>
