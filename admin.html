@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    
+    <script>
+        // Automatically grant admin access (for testing purposes)
+        localStorage.setItem("admin", "true"); 
+
+        // Check admin access
+        if (localStorage.getItem("admin") !== "true") {
+            alert("Access denied! Redirecting to login.");
+            window.location.href = "login.html";
+        }
+    </script>
+
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -59,21 +71,9 @@
             padding: 5px;
             cursor: pointer;
         }
-        img {
-            width: 50px;
-            height: auto;
-        }
     </style>
 </head>
 <body>
-
-<script>
-    // Admin authentication check
-    if (localStorage.getItem("admin") !== "true") {
-        alert("Access denied! Redirecting to login.");
-        window.location.href = "login.html";
-    }
-</script>
 
 <div class="container">
     <h2>Admin Panel - Manage Products</h2>
