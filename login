@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            display: inline-block;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-field {
+            width: 90%;
+            padding: 10px;
+            margin: 5px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #35424a;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #5a6d73;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Login / Register</h2>
+
+    <input type="text" id="username" class="input-field" placeholder="Username">
+    <input type="password" id="password" class="input-field" placeholder="Password">
+    
+    <button class="btn" onclick="register()">Register</button>
+    <button class="btn" onclick="login()">Login</button>
+</div>
+
+<script>
+    function register() {
+        let username = document.getElementById("username").value.trim();
+        let password = document.getElementById("password").value.trim();
+
+        if (!username || !password) {
+            alert("Please enter a valid username and password!");
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem("users")) || {};
+
+        if (users[username]) {
+            alert("Username already exists!");
+        } else {
+            users[username] = { password: password, role: "user" };
+            localStorage.setItem("users", JSON.stringify(users));
+            alert("Registration successful! You can now log in.");
+        }
+    }
+
+    function login() {
+        let username = document.getElementById("username").value.trim();
+        let password = document.getElementById("password").value.trim();
+        
+        let users = JSON.parse(localStorage.getItem("users")) || {};
+
+        if (users[username] && users[username].password === password) {
+            localStorage.setItem("loggedInUser", username);
+            localStorage.setItem("admin", users[username].role === "admin" ? "true" : "false");
+
+            alert("Login successful!");
+
+            if (users[username].role === "admin") {
+                window.location.href = "admin.html"; // Redirect admin
+            } else {
+                window.location.href = "index.html"; // Redirect regular user
+            }
+        } else {
+            alert("Invalid username or password!");
+        }
+    }
+</script>
+
+</body>
+</html>
