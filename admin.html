@@ -1,0 +1,155 @@
+if (localStorage.getItem("admin") !== "true") {
+    alert("Access denied!");
+    window.location.href = "login.html";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .btn {
+            background-color: #35424a;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #5a6d73;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #35424a;
+            color: white;
+        }
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Admin Panel - Manage Products</h2>
+
+    <input type="text" id="product-name" class="input-field" placeholder="Product Name">
+    <input type="number" id="product-price" class="input-field" placeholder="Price">
+    <input type="text" id="product-image" class="input-field" placeholder="Image URL">
+    <button class="btn" onclick="addProduct()">Add Product</button>
+
+    <h3>Product List</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="product-table"></tbody>
+    </table>
+
+    <button class="btn" onclick="exportProducts()">Export JSON</button>
+</div>
+
+<script>
+    function loadProducts() {
+        let products = JSON.parse(localStorage.getItem("products")) || [];
+        let productTable = document.getElementById("product-table");
+        productTable.innerHTML = "";
+
+        products.forEach((product, index) => {
+            productTable.innerHTML += `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>שקל ${product.price.toFixed(2)}</td>
+                    <td><img src="${product.image}" width="50"></td>
+                    <td><button class="delete-btn" onclick="deleteProduct(${index})">Delete</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function addProduct() {
+        let name = document.getElementById("product-name").value;
+        let price = parseFloat(document.getElementById("product-price").value);
+        let image = document.getElementById("product-image").value;
+
+        if (!name || isNaN(price) || !image) {
+            alert("Please fill all fields correctly!");
+            return;
+        }
+
+        let products = JSON.parse(localStorage.getItem("products")) || [];
+        products.push({ name, price, image });
+        localStorage.setItem("products", JSON.stringify(products));
+
+        document.getElementById("product-name").value = "";
+        document.getElementById("product-price").value = "";
+        document.getElementById("product-image").value = "";
+        
+        loadProducts();
+    }
+
+    function deleteProduct(index) {
+        let products = JSON.parse(localStorage.getItem("products")) || [];
+        products.splice(index, 1);
+        localStorage.setItem("products", JSON.stringify(products));
+        loadProducts();
+    }
+
+    function exportProducts() {
+        let products = localStorage.getItem("products");
+        let blob = new Blob([products], { type: "application/json" });
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "products.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    loadProducts();
+</script>
+
+</body>
+</html>

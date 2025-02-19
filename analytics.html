@@ -87,7 +87,7 @@
 </main>
 <script>
     // Fetch real data from a backend server
-    fetch('http://localhost:3000/api/analytics') // Replace with your actual API endpoint
+    fetch('https://thyi123123.github.io/data.json') // Replace with your actual API endpoint
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -95,6 +95,7 @@
             return response.json();
         })
         .then(data => {
+            console.log('Data fetched successfully:', data); // Log the fetched data
             document.getElementById("total-visitors").textContent = data.totalVisitors || 0;
             document.getElementById("total-sales").textContent = data.totalSales || 0;
             document.getElementById("products-sold").textContent = data.productsSold || 0;
