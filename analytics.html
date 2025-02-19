@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Analytics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #35424a;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .card p {
+            font-size: 18px;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            flex-wrap: wrap; /* Make it responsive */
+        }
+        .stats-card {
+            flex: 1 1 30%; /* Responsive flexbox */
+            background: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            margin: 10px; /* Add margin for spacing */
+        }
+        @media (max-width: 768px) {
+            .stats-card {
+                flex: 1 1 100%; /* Stack cards on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Website Analytics</h1>
+</header>
+<main class="container">
+    <div class="card">
+        <h3>Website Traffic</h3>
+        <p>View the number of visitors in real-time.</p>
+    </div>
+    <!-- Display Analytics Statistics -->
+    <div class="stats-container">
+        <div class="stats-card">
+            <h3>Total Visitors</h3>
+            <p id="total-visitors">Loading...</p>
+        </div>
+        <div class="stats-card">
+            <h3>Total Sales</h3>
+            <p id="total-sales">Loading...</p>
+        </div>
+        <div class="stats-card">
+            <h3>Products Sold</h3>
+            <p id="products-sold">Loading...</p>
+        </div>
+    </div>
+</main>
+<script>
+    // Fetch real data from a backend server
+    fetch('https://thyi123123.github.io') // Replace with your actual API endpoint
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("total-visitors").textContent = data.totalVisitors || 0;
+            document.getElementById("total-sales").textContent = data.totalSales || 0;
+            document.getElementById("products-sold").textContent = data.productsSold || 0;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            document.getElementById("total-visitors").textContent = "Error loading data";
+            document.getElementById("total-sales").textContent = "Error loading data";
+            document.getElementById("products-sold").textContent = "Error loading data";
+        });
+</script>
+</body>
+</html>
