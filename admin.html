@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <script>
+        if (localStorage.getItem("admin") !== "true") {
+            alert("Access denied! Redirecting to login.");
+            window.location.href = "login.html";
+        }
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; }
+        .container { background: white; padding: 20px; border-radius: 5px; display: inline-block; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+        .btn { padding: 10px 20px; border: none; cursor: pointer; margin: 5px; }
+        .admin-btn { background-color: green; color: white; }
+        .remove-btn { background-color: orange; color: white; }
+        .delete-btn { background-color: red; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Admin Panel</h2>
+    <p>Manage Users</p>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="user-table"></tbody>
+    </table>
+
+    <button class="btn" onclick="exportUsers()">Download User List</button>
+    <button class="btn" onclick="logout()">Logout</button>
+</div>
+
+<script>
+    function loadUsers() {
+        let users = JSON.parse(localStorage.getItem("users")) || {};
+        let table = document.getElementById("user-table");
+        table.innerHTML = "";
+
+        for (let username in users) {
+            let user = users[username];
+            let isAdmin = user.role === "admin";
+            
+            table.innerHTML += `
+                <tr>
+                    <td>${username}</td>
+                    <td>${user.role}</td>
+                    <td>
+                        ${isAdmin ? 
+                            `<button class="remove-btn" onclick="removeAdmin('${username}')">Remove Admin</button>` : 
+                            `<button class="admin-btn" onclick="makeAdmin('${username}')">Make Admin</button>`}
+                        <button class="delete-btn" onclick="deleteUser('${username}')">Delete</button>
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    function makeAdmin(username) {
+        let users = JSON.parse(localStorage.getItem("users"));
+        users[username].role = "admin";
+        localStorage.setItem("users", JSON.stringify(users));
+        loadUsers();
+    }
+
+    function removeAdmin(username) {
+        let users = JSON.parse(localStorage.getItem("users"));
+        users[username].role = "user";
+        localStorage.setItem("users", JSON.stringify(users));
+        loadUsers();
+    }
+
+    function deleteUser(username) {
+        let users = JSON.parse(localStorage.getItem("users"));
+        delete users[username];
+        localStorage.setItem("users", JSON.stringify(users));
+        loadUsers();
+    }
+
+    function exportUsers() {
+        let users = JSON.parse(localStorage.getItem("users")) || {};
+        let data = "Username | Role\n";
+        
+        for (let username in users) {
+            data += `${username} | ${users[username].role}\n`;
+        }
+
+        let blob = new Blob([data], { type: "text/plain" });
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "users.txt";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("admin");
+        window.location.href = "login.html";
+    }
+
+    loadUsers();
+</script>
+
+</body>
+</html>
