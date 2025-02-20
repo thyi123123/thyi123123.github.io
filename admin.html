@@ -88,7 +88,7 @@
 
     function exportUsers() {
         let users = JSON.parse(localStorage.getItem("users")) || {};
-        let data = "Username | Role\n";
+        let data = "Username | Role | password" \n";
         
         for (let username in users) {
             data += `${username} | ${users[username].role}\n`;
