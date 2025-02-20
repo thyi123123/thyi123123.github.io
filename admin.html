@@ -97,7 +97,7 @@
         let blob = new Blob([data], { type: "text/plain" });
         let a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = "users.txt";
+        a.download = "accaunts.xlsx";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
