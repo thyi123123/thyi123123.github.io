@@ -94,7 +94,7 @@
             data += `${username} | ${users[username].role}\n`;
         }
 
-        let blob = new Blob([data], { type: "text/plain" });
+        let blob = new Blob([data], { type: "text/plain/pass" });
         let a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
         a.download = "accaunts.csv";
