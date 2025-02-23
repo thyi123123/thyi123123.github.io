@@ -20,8 +20,8 @@
     <input type="text" id="username" class="input-field" placeholder="Username">
     <input type="password" id="password" class="input-field" placeholder="Password">
     
-    <button class="btn" onclick="register()">Register</button>
-    <button class="btn" onclick="login()">Login</button>
+    <button class="btn" onclick="register()">הרשם</button>
+    <button class="btn" onclick="login()">התחבר</button>
 </div>
 
 <script>
@@ -30,18 +30,18 @@
         let password = document.getElementById("password").value.trim();
 
         if (!username || !password) {
-            alert("Please enter a valid username and password!");
+            alert("תכניס בבקשה שם משתמש וסיסמה תקינים");
             return;
         }
 
         let users = JSON.parse(localStorage.getItem("users")) || {};
 
         if (users[username]) {
-            alert("Username already exists!");
+            alert("יש משתמש כזה");
         } else {
             users[username] = { password: password, role: "user" };
             localStorage.setItem("users", JSON.stringify(users));
-            alert("Registration successful! You can now log in.");
+            alert("רישום התבצע בהצלחה התחבר אם הזדעות");
         }
     }
 
