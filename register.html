@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAfxPCp_fYoqZzBgET1Rm2Cf1Hisxld8Qw",
+            authDomain: "phonesite-6ac9c.firebaseapp.com",
+            projectId: "phonesite-6ac9c",
+            storageBucket: "phonesite-6ac9c.appspot.com",
+            messagingSenderId: "913048912457",
+            appId: "1:913048912457:web:yourAppId"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Register function
+        window.register = async function () {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const role = document.getElementById("role").value;
+            const message = document.getElementById("message");
+
+            if (email === "" || password === "") {
+                message.innerText = "Please fill all fields!";
+                return;
+            }
+
+            try {
+                // Create user with email and password
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Store user data in Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    email: email,
+                    role: role
+                });
+
+                message.style.color = "green";
+                message.innerText = "User registered successfully!";
+                setTimeout(() => window.location.href = "login.html", 2000);
+            } catch (error) {
+                message.style.color = "red";
+                message.innerText = error.message;
+            }
+        };
+    </script>
+
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, select { padding: 10px; margin: 10px; width: 80%; max-width: 300px; }
+        button { padding: 10px 20px; cursor: pointer; margin: 10px; background: green; color: white; border: none; }
+    </style>
+</head>
+<body>
+
+    <h2>Register</h2>
+    <input type="email" id="email" placeholder="Enter Email" required><br>
+    <input type="password" id="password" placeholder="Enter Password" required><br>
+    <select id="role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+    </select><br>
+    <button onclick="register()">Register</button>
+    <p id="message"></p>
+
+</body>
+</html>
