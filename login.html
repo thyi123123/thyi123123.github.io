@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Login & Register</title>
+    <title>Phonesite Login</title>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
@@ -19,21 +19,21 @@
 
 <div class="container">
     <h2>Login / Register</h2>
-    <input type="text" id="email" class="input-field" placeholder="Email">
+    <input type="email" id="email" class="input-field" placeholder="Email">
     <input type="password" id="password" class="input-field" placeholder="Password">
-    <button class="btn" onclick="register()">Register</button>
-    <button class="btn" onclick="login()">Login</button>
+    <button class="btn" onclick="registerUser()">Register</button>
+    <button class="btn" onclick="loginUser()">Login</button>
 </div>
 
 <script>
     // 🔹 Firebase Configuration
     const firebaseConfig = {
-        apiKey: "AIzaSyAfxPCp_fYoqZzBgET1Rm2Cf1Hisxld8Qw",
+        apiKey: "AlzaSyAfxPCp_fYoqZzBgET1Rm2Cf1Hisxld8Qw",
         authDomain: "phonesite-6ac9c.firebaseapp.com",
         projectId: "phonesite-6ac9c",
         storageBucket: "phonesite-6ac9c.appspot.com",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        messagingSenderId: "913048912457",
+        appId: "1:913048912457:web:your-app-id"
     };
 
     // 🔹 Initialize Firebase
@@ -42,12 +42,12 @@
     const db = firebase.firestore();
 
     // 🔹 Register User
-    function register() {
+    function registerUser() {
         let email = document.getElementById("email").value.trim();
         let password = document.getElementById("password").value.trim();
 
         if (!email || !password) {
-            alert("Please enter valid email and password");
+            alert("Please enter a valid email and password.");
             return;
         }
 
@@ -57,8 +57,9 @@
                 db.collection("users").doc(user.uid).set({
                     email: user.email,
                     role: "user" // Default role
+                }).then(() => {
+                    alert("Registration successful! You can now log in.");
                 });
-                alert("Registration successful!");
             })
             .catch(error => {
                 alert("Error: " + error.message);
@@ -66,7 +67,7 @@
     }
 
     // 🔹 Login User
-    function login() {
+    function loginUser() {
         let email = document.getElementById("email").value.trim();
         let password = document.getElementById("password").value.trim();
 
@@ -74,11 +75,13 @@
             .then(userCredential => {
                 let user = userCredential.user;
 
-                // Check role from Firestore
+                // Get role from Firestore
                 db.collection("users").doc(user.uid).get().then(doc => {
                     if (doc.exists) {
                         let role = doc.data().role;
                         alert("Login successful!");
+
+                        // Redirect based on role
                         window.location.href = (role === "admin") ? "admin.html" : "index.html";
                     } else {
                         alert("User data not found!");
