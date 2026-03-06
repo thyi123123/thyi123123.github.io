@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>מצב התרעה יקיר</title>
+
+<style>
+
+body{
+font-family:Arial, sans-serif;
+background:#111;
+color:white;
+text-align:center;
+margin:0;
+padding:20px;
+}
+
+h1{
+font-size:28px;
+margin-bottom:30px;
+}
+
+#status{
+font-size:42px;
+font-weight:bold;
+margin:40px 0;
+}
+
+#timer{
+font-size:32px;
+}
+
+.safe{
+color:#00ff88;
+}
+
+.alert{
+color:#ff2b2b;
+}
+
+.box{
+background:#222;
+padding:25px;
+border-radius:12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>מצב התרעה - יקיר</h1>
+
+<div class="box">
+<div id="status" class="safe">אין התרעות</div>
+<div id="timer"></div>
+</div>
+
+<script>
+
+let lastAlertTime = 0;
+const shelterTime = 10 * 60 * 1000;
+
+async function checkAlerts(){
+
+try{
+
+const response = await fetch("https://api.tzevaadom.co.il/notifications");
+const data = await response.json();
+
+if(data && data.data){
+
+data.data.forEach(alert => {
+
+if(alert.includes("יקיר") || alert.includes("Yakir")){
+lastAlertTime = Date.now();
+}
+
+});
+
+}
+
+}catch(e){
+console.log("API error");
+}
+
+updateStatus();
+
+}
+
+function updateStatus(){
+
+const now = Date.now();
+const diff = now - lastAlertTime;
+
+if(diff < shelterTime){
+
+document.getElementById("status").innerText="יש להישאר במרחב מוגן";
+document.getElementById("status").className="alert";
+
+let remaining = Math.floor((shelterTime-diff)/1000);
+
+let min = Math.floor(remaining/60);
+let sec = remaining%60;
+
+document.getElementById("timer").innerText=
+"יציאה בטוחה בעוד "+min+":"+(sec<10?"0":"")+sec;
+
+}else{
+
+document.getElementById("status").innerText="ניתן לצאת מהמרחב המוגן";
+document.getElementById("status").className="safe";
+
+document.getElementById("timer").innerText="";
+
+}
+
+}
+
+setInterval(checkAlerts,5000);
+setInterval(updateStatus,1000);
+
+</script>
+
+</body>
+</html>
