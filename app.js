@@ -41,6 +41,29 @@ document.getElementById("notify-button").addEventListener("click", async () => {
     : "Browser notifications were not enabled.";
 });
 
+initializeAuth();
+
+async function initializeAuth() {
+  try {
+    const redirectResult = await firebaseAuth.getRedirectResult();
+    if (redirectResult && redirectResult.user) {
+      await finishLogin(redirectResult.user, "Signed in with Google.");
+      return;
+    }
+  } catch (error) {
+    loginStatus.textContent = humanizeGoogleError(error.code || error.message);
+  }
+
+  firebaseAuth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      return;
+    }
+    if (!state.idToken) {
+      await finishLogin(user, "Signed in.");
+    }
+  });
+}
+
 async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
@@ -78,10 +101,22 @@ async function registerAdmin() {
 async function loginWithGoogle() {
   loginStatus.textContent = "Opening Google sign-in...";
   try {
+    const isSmallTouchScreen = window.matchMedia("(max-width: 900px)").matches;
+    if (isSmallTouchScreen) {
+      await firebaseAuth.signInWithRedirect(googleProvider);
+      return;
+    }
+
     const result = await firebaseAuth.signInWithPopup(googleProvider);
     await finishLogin(result.user, "Signed in with Google.");
   } catch (error) {
-    loginStatus.textContent = humanizeGoogleError(error.code || error.message);
+    const code = error.code || error.message;
+    if (code === "auth/popup-blocked" || code === "auth/cancelled-popup-request") {
+      loginStatus.textContent = "Popup was blocked. Switching to full-page Google sign-in...";
+      await firebaseAuth.signInWithRedirect(googleProvider);
+      return;
+    }
+    loginStatus.textContent = humanizeGoogleError(code);
   }
 }
 
