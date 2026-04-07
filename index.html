@@ -22,9 +22,10 @@
       <input id="password" type="password" placeholder="Password">
       <div class="toolbar-actions">
         <button id="login-button">Sign in</button>
+        <button id="google-login-button">Google login</button>
         <button id="register-button" class="ghost">Create admin account</button>
       </div>
-     <p id="login-status" class="status-line">Use Firebase Authentication email/password. If you do not have an admin yet, create one here first.</p>
+      <p id="login-status" class="status-line">Use Firebase Authentication email/password or Google. Google sign-in must be enabled in Firebase Authentication, and this page should be served from localhost or hosting instead of file://.</p>
     </section>
 
     <section id="dashboard" class="hidden">
@@ -76,6 +77,8 @@
     </section>
   </main>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>

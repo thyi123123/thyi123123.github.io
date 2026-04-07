@@ -14,6 +14,10 @@ const state = {
   pollHandle: null
 };
 
+firebase.initializeApp(firebaseConfig);
+const firebaseAuth = firebase.auth();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
 const loginPanel = document.getElementById("login-panel");
 const dashboard = document.getElementById("dashboard");
 const loginStatus = document.getElementById("login-status");
@@ -26,6 +30,7 @@ const usersCount = document.getElementById("users-count");
 const waitingCount = document.getElementById("waiting-count");
 
 document.getElementById("login-button").addEventListener("click", login);
+document.getElementById("google-login-button").addEventListener("click", loginWithGoogle);
 document.getElementById("register-button").addEventListener("click", registerAdmin);
 document.getElementById("refresh-button").addEventListener("click", refreshDashboard);
 document.getElementById("logout-button").addEventListener("click", logout);
@@ -39,64 +44,68 @@ document.getElementById("notify-button").addEventListener("click", async () => {
 async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
-  await authenticate("signInWithPassword", email, password, "Signing in...");
-}
-
-async function registerAdmin() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  await authenticate("signUp", email, password, "Creating admin account...");
-}
-
-async function authenticate(mode, email, password, message) {
   if (!email || !password) {
     loginStatus.textContent = "Enter email and password first.";
     return;
   }
 
-  loginStatus.textContent = message;
+  loginStatus.textContent = "Signing in...";
   try {
-    const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${firebaseConfig.apiKey}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-          returnSecureToken: true
-        })
-      }
-    );
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error?.message || "Login failed");
-    }
-
-    state.idToken = data.idToken;
-    state.refreshToken = data.refreshToken;
-    state.email = data.email;
-    loginPanel.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-    sessionEmail.textContent = data.email;
-    sessionStatus.textContent = "Connected to Firebase. Polling every 10 seconds.";
-    loginStatus.textContent = mode === "signUp"
-      ? "Admin account created and signed in."
-      : "Signed in.";
-    await refreshDashboard();
-    startPolling();
+    const result = await firebaseAuth.signInWithEmailAndPassword(email, password);
+    await finishLogin(result.user, "Signed in.");
   } catch (error) {
-    loginStatus.textContent = humanizeAuthError(error.message);
+    loginStatus.textContent = humanizeAuthError(error.code || error.message);
   }
 }
 
-function logout() {
+async function registerAdmin() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  if (!email || !password) {
+    loginStatus.textContent = "Enter email and password first.";
+    return;
+  }
+
+  loginStatus.textContent = "Creating admin account...";
+  try {
+    const result = await firebaseAuth.createUserWithEmailAndPassword(email, password);
+    await finishLogin(result.user, "Admin account created and signed in.");
+  } catch (error) {
+    loginStatus.textContent = humanizeAuthError(error.code || error.message);
+  }
+}
+
+async function loginWithGoogle() {
+  loginStatus.textContent = "Opening Google sign-in...";
+  try {
+    const result = await firebaseAuth.signInWithPopup(googleProvider);
+    await finishLogin(result.user, "Signed in with Google.");
+  } catch (error) {
+    loginStatus.textContent = humanizeGoogleError(error.code || error.message);
+  }
+}
+
+async function finishLogin(user, message) {
+  state.idToken = await user.getIdToken();
+  state.refreshToken = user.refreshToken || "";
+  state.email = user.email || "Google account";
+  loginPanel.classList.add("hidden");
+  dashboard.classList.remove("hidden");
+  sessionEmail.textContent = state.email;
+  sessionStatus.textContent = "Connected to Firebase. Polling every 10 seconds.";
+  loginStatus.textContent = message;
+  await refreshDashboard();
+  startPolling();
+}
+
+async function logout() {
   state.idToken = "";
   state.refreshToken = "";
   state.email = "";
   state.seenOpenAlerts.clear();
   clearInterval(state.pollHandle);
   state.pollHandle = null;
+  await firebaseAuth.signOut();
   dashboard.classList.add("hidden");
   loginPanel.classList.remove("hidden");
   loginStatus.textContent = "Signed out.";
@@ -297,17 +306,38 @@ function escapeHtml(value) {
 
 function humanizeAuthError(message) {
   switch (message) {
+    case "auth/user-not-found":
     case "EMAIL_NOT_FOUND":
       return "No admin account exists with that email. Use Create admin account first.";
+    case "auth/wrong-password":
+    case "auth/invalid-credential":
     case "INVALID_LOGIN_CREDENTIALS":
     case "INVALID_PASSWORD":
       return "Wrong email or password.";
+    case "auth/email-already-in-use":
     case "EMAIL_EXISTS":
       return "That email already exists. Use Sign in instead.";
+    case "auth/operation-not-allowed":
     case "OPERATION_NOT_ALLOWED":
       return "Email/password login is disabled in Firebase Authentication. Enable it in Firebase Console.";
+    case "auth/weak-password":
     case "WEAK_PASSWORD : Password should be at least 6 characters":
       return "Password must be at least 6 characters.";
+    default:
+      return message;
+  }
+}
+
+function humanizeGoogleError(message) {
+  switch (message) {
+    case "auth/operation-not-allowed":
+      return "Google sign-in is disabled in Firebase Authentication. Enable Google provider in Firebase Console.";
+    case "auth/popup-blocked":
+      return "The popup was blocked by the browser. Allow popups and try again.";
+    case "auth/popup-closed-by-user":
+      return "The Google popup was closed before sign-in finished.";
+    case "auth/unauthorized-domain":
+      return "This page must be served from an authorized domain such as localhost or Firebase Hosting, not directly from file://.";
     default:
       return message;
   }
