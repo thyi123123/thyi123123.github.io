@@ -295,24 +295,8 @@ function renderPrices() {
     </section>`;
 }
 
-function renderCareers() {
-  return `${pageHero("Careers", "Join a practical, safety-focused team moving essential materials back into productive use.")}
-    <section class="page split">
-      <div>
-        <span class="eyebrow">Open positions</span>
-        <h2>Current opportunities</h2>
-        <ul class="check-list">
-          <li>Yard Operations Coordinator</li>
-          <li>Commercial Account Manager</li>
-          <li>Truck Driver</li>
-          <li>Safety & Compliance Assistant</li>
-        </ul>
-        <h3>Benefits</h3>
-        <p>Stable work, practical training, safety equipment, growth paths, and a team that values reliability.</p>
-      </div>
-      ${applicationForm()}
-    </section>`;
-}
+
+
 
 function applicationForm() {
   return `<form class="card form">
