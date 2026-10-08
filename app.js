@@ -1,7 +1,7 @@
 const assets = {
   hero: "assets/hero-metal-yard.png",
   facility: "assets/facility-overview.png",
-  copper: "assets/material-copper.png",
+  copper: "assets/assets/copper-495x350.jpg",
   aluminum: "assets/material-aluminum.png",
   electronics: "assets/electronics-recycling.png"
 };
@@ -290,9 +290,7 @@ function renderPrices() {
         </table>
       </div>
       <div class="grid three" style="margin-top:24px">
-        <article class="card"><h3>Configurable endpoint</h3><p>Set <code>window.IR_METALS_PRICE_API_URL</code> before <code>app.js</code> to connect any JSON endpoint.</p></article>
-        <article class="card"><h3>Supported payloads</h3><p>The parser accepts arrays, <code>{ prices: [] }</code>, <code>{ metals: [] }</code>, or simple <code>{ rates: {} }</code> objects.</p></article>
-        <article class="card"><h3>Update limit</h3><p>The frontend cache refreshes after 8 hours, which equals about 90 live updates per month per browser.</p></article>
+        
       </div>
     </section>`;
 }
