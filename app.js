@@ -3,6 +3,7 @@ const assets = {
   facility: "assets/facility-overview.png",
   copper: "assets/copper-495x350.jpg",
   aluminum: "assets/aluminum.jpg",
+  electronics: "assets/electronics-recycling.png"
 };
 
 const services = [
@@ -42,7 +43,11 @@ const services = [
     bullets: ["Container placement", "Pickup scheduling", "Export-ready packing"]
   },
   {
-
+    slug: "international-metal-trading",
+    title: "International Metal Trading",
+    summary: "Export channels for inspected, packed, and documented metal commodities.",
+    image: assets.electronics,
+    bullets: ["Quality control", "Container loading", "Documentation and customs coordination"]
   }
 ];
 
@@ -55,7 +60,8 @@ const materials = [
   { slug: "lead", title: "Lead", image: assets.facility, forms: ["Sheets", "Weights", "Cable lead", "Industrial scrap"], process: "Handled with strict containment, documentation, and approved downstream recovery partners." },
   { slug: "iron-steel", title: "Iron & Steel", image: assets.hero, forms: ["Structural steel", "Machinery", "Plate", "Turnings"], process: "Cut, sheared, sorted, and loaded for steel mills and export streams." },
   { slug: "cables-motors", title: "Cables & Motors", image: assets.copper, forms: ["Insulated cable", "Electric motors", "Transformers", "Harnesses"], process: "Recovered through grading, dismantling, and separation of copper, steel, and insulation fractions." },
-]
+  { slug: "electronic-waste", title: "Electronic Waste", image: assets.electronics, forms: ["Boards", "Servers", "Power supplies", "Telecom equipment"], process: "Asset streams are sorted, depolluted, and sent to compliant downstream processors." }
+];
 
 const industries = ["Manufacturing", "Electronics", "Construction", "Telecommunications", "Automotive", "Defense & Aerospace"];
 
