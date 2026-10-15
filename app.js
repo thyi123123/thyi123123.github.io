@@ -2,7 +2,7 @@ const assets = {
   hero: "assets/hero-metal-yard.png",
   facility: "assets/facility-overview.png",
   copper: "assets/copper-495x350.jpg",
-  aluminum: "assets/aluminum.jpg",
+  aluminum: "assets/material-aluminum.png",
   electronics: "assets/electronics-recycling.png"
 };
 
