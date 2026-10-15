@@ -1,7 +1,7 @@
 const assets = {
   hero: "assets/hero-metal-yard.png",
   facility: "assets/facility-overview.png",
-  copper: "assets/copper-495x350.jpg",
+  copper: "assets/material-copper.png",
   aluminum: "assets/material-aluminum.png",
   electronics: "assets/electronics-recycling.png"
 };
@@ -10,21 +10,21 @@ const services = [
   {
     slug: "scrap-metal-purchasing",
     title: "Scrap Metal Purchasing",
-    summary: "Transparent buying for non-ferrous and ferrous metals with fast payment and calibrated weighing.",
+    summary: "Competitive purchasing based on current market conditions and accurate certified weighing systems.",
     image: assets.copper,
     bullets: ["Walk-in and scheduled pickups", "Grade sorting and pricing support", "Commercial volume programs"]
   },
   {
     slug: "industrial-recycling",
-    title: "Industrial Recycling",
-    summary: "Recurring recovery programs for production scrap, obsolete inventory, and plant maintenance streams.",
+    title: "Industrial Metal Recycling",
+    summary: "We purchase and process a wide range of ferrous and non-ferrous metals from industrial facilities, manufacturers, contractors, and commercial businesses.",
     image: assets.facility,
     bullets: ["On-site assessment", "Material flow reporting", "Dedicated account management"]
   },
   {
     slug: "factory-cleanouts",
-    title: "Factory Cleanouts",
-    summary: "Organized removal of machinery, racking, cables, metals, and surplus assets from active or closed facilities.",
+    title: "Factory Clean-Outs",
+    summary: "Complete industrial clean-out services for obsolete machinery, production waste, and surplus inventory.",
     image: assets.hero,
     bullets: ["Shift-sensitive scheduling", "Segregated recovery", "Documentation packages"]
   },
@@ -38,7 +38,7 @@ const services = [
   {
     slug: "container-logistics-services",
     title: "Container & Logistics Services",
-    summary: "Roll-off bins, cages, pallets, and transport planning for clean material separation at source.",
+    summary: "Collection containers, scheduled pickups, and timely transportation from customer facilities.",
     image: assets.aluminum,
     bullets: ["Container placement", "Pickup scheduling", "Export-ready packing"]
   },
@@ -63,7 +63,7 @@ const materials = [
   { slug: "electronic-waste", title: "Electronic Waste", image: assets.electronics, forms: ["Boards", "Servers", "Power supplies", "Telecom equipment"], process: "Asset streams are sorted, depolluted, and sent to compliant downstream processors." }
 ];
 
-const industries = ["Manufacturing", "Electronics", "Construction", "Telecommunications", "Automotive", "Defense & Aerospace"];
+const industries = ["Manufacturing", "Construction", "Electronics", "Telecommunications", "Automotive", "Energy", "Infrastructure"];
 
 const news = [
   ["Copper market updates", "How volatility in copper demand affects scrap planning and contract timing."],
@@ -104,15 +104,14 @@ function renderHome() {
     <section class="hero">
       <div class="hero-inner">
         <span class="eyebrow">Industrial metal recovery</span>
-        <h1>Leaders in Metal Recycling Since 1983</h1>
-        <p>IR Metals helps factories, contractors, telecom operators, and exporters recover more value from scrap through accurate grading, modern logistics, and compliant recycling.</p>
+        <h1>Reliable Metal Recycling & Industrial Metal Solutions Since 1983</h1>
+        <p>I.R. Metals For Industry Ltd. provides professional metal recycling, industrial scrap management, and international metal trading. We help manufacturers, contractors, and industrial businesses maximize the value of their recyclable metals while supporting a more sustainable future.</p>
         <div class="actions">
           <a class="btn primary" href="#contact">Request a Quote</a>
-          <a class="btn secondary" href="#materials">Sell Scrap</a>
           <a class="btn ghost" href="#contact">Contact Us</a>
         </div>
         <div class="hero-strip">
-          <div class="hero-stat"><strong>43+</strong><span>Years in business</span></div>
+          <div class="hero-stat"><strong>40+</strong><span>Years of industry experience</span></div>
           <div class="hero-stat"><strong>75k</strong><span>Tons processed annually</span></div>
           <div class="hero-stat"><strong>12</strong><span>Industries served</span></div>
           <div class="hero-stat"><strong>18</strong><span>Countries exported to</span></div>
@@ -126,11 +125,22 @@ function renderHome() {
       </div>
       ${cardGrid(services.slice(0, 5), "service")}
     </section>
+    <section class="band">
+      <div class="section split">
+        <div class="copy">
+          <span class="eyebrow">About preview</span>
+          <h2>Reliable, transparent, professional service</h2>
+          <p>With more than four decades of experience, I.R. Metals has built a reputation for reliability, transparency, and professional service. Our experienced team works with businesses across multiple industries to deliver efficient recycling solutions and responsible metal recovery.</p>
+          <a class="arrow-link" href="#about">Learn more about us</a>
+        </div>
+        <img src="${assets.facility}" alt="I.R. Metals recycling facility">
+      </div>
+    </section>
     ${pricesPreview()}
     <section class="band">
       <div class="section split">
         <div class="copy">
-          <span class="eyebrow">Materials we buy</span>
+          <span class="eyebrow">Materials we recycle</span>
           <h2>Non-ferrous, ferrous, cables, motors, and electronic scrap</h2>
           <p>Each load is graded, weighed, and documented clearly so suppliers can understand the value of their material and improve separation at source.</p>
           <ul class="pill-list">${materials.slice(0, 9).map(m => `<li>${m.title}</li>`).join("")}</ul>
@@ -146,7 +156,7 @@ function renderHome() {
         ${["Fast payments", "Accurate weighing", "Environmental compliance", "Modern equipment"].map((item, index) => `
           <article class="card ${index === 1 ? "dark" : ""}">
             <h3>${item}</h3>
-            <p>${["Clear settlement workflows and responsive commercial support.", "Calibrated scales, organized receiving lanes, and transparent paperwork.", "Documented procedures for safe handling and approved downstream partners.", "Processing equipment, containers, and sorting tools matched to industrial volumes."][index]}</p>
+            <p>${["A fast payment process supported by clear settlement workflows.", "Accurate digital weighing, organized receiving lanes, and transparent paperwork.", "Environmentally responsible recycling that reduces waste and conserves resources.", "Professional logistics and equipment matched to industrial volumes."][index]}</p>
           </article>
         `).join("")}
       </div>
@@ -156,7 +166,7 @@ function renderHome() {
         <div class="section-head">
           <div><span class="eyebrow">Customers</span><h2>Built for industrial suppliers</h2></div>
         </div>
-        <div class="grid three">${industries.slice(0, 6).map(i => `<article class="card"><h3>${i}</h3><p>Dedicated recycling streams for ${i.toLowerCase()} operations, maintenance teams, and project managers.</p></article>`).join("")}</div>
+        <div class="grid three">${industries.map(i => `<article class="card"><h3>${i}</h3><p>Dedicated recycling streams for ${i.toLowerCase()} operations, maintenance teams, and project managers.</p></article>`).join("")}</div>
       </div>
     </section>
     <section class="section">
@@ -167,27 +177,30 @@ function renderHome() {
 }
 
 function pageHero(title, text) {
-  return `<section class="page-hero"><div class="page"><span class="eyebrow">IR Metals</span><h1>${title}</h1><p>${text}</p></div></section>`;
+  return `<section class="page-hero"><div class="page"><span class="eyebrow">I.R. Metals</span><h1>${title}</h1><p>${text}</p></div></section>`;
 }
 
 function renderAbout() {
-  return `${pageHero("About Us", "A family-grown recycling company focused on safety, reliability, and long-term supplier relationships.")}
+  return `${pageHero("About Us", "Founded in 1983, I.R. Metals has grown into one of Israel's experienced industrial metal recycling companies.")}
     <section class="page split">
       <div>
-        <span class="eyebrow">Company history</span>
-        <h2>Four decades of industrial recycling</h2>
-        <div class="timeline">
-          <div class="timeline-item"><strong>1983</strong><p>IR Metals begins as a local buyer serving workshops and small factories.</p></div>
-          <div class="timeline-item"><strong>1998</strong><p>Container services and commercial collection routes expand across industrial zones.</p></div>
-          <div class="timeline-item"><strong>2012</strong><p>Export and trading capabilities are added for prepared non-ferrous grades.</p></div>
-          <div class="timeline-item"><strong>Today</strong><p>The company supports complex cleanouts, recurring recycling programs, and international shipments.</p></div>
-        </div>
+        <span class="eyebrow">Our story</span>
+        <h2>Dependable recycling services that recover maximum value</h2>
+        <p>Our mission is to provide dependable recycling services while helping businesses recover maximum value from surplus metals and industrial scrap.</p>
+        <ul class="check-list">
+          <li>Integrity</li>
+          <li>Reliability</li>
+          <li>Safety</li>
+          <li>Sustainability</li>
+          <li>Customer Focus</li>
+          <li>Continuous Improvement</li>
+        </ul>
       </div>
       <img src="${assets.facility}" alt="IR Metals facility overview">
     </section>
     <section class="band"><div class="section grid three">
-      <article class="card"><h3>Management team</h3><p>Experienced operations, logistics, commercial, and compliance leaders coordinate each program from quote to settlement.</p></article>
-      <article class="card"><h3>Mission & values</h3><p>Recover maximum value from materials while keeping suppliers informed, safe, and compliant.</p></article>
+      <article class="card"><h3>Mission</h3><p>To provide efficient, transparent, and environmentally responsible metal recycling solutions that create value for our customers and contribute to a sustainable future.</p></article>
+      <article class="card"><h3>Vision</h3><p>To become a trusted regional leader in industrial metal recycling through innovation, customer service, and responsible environmental practices.</p></article>
       <article class="card"><h3>Safety commitment</h3><p>Site procedures, risk reviews, equipment checks, and contractor coordination are part of every serious project.</p></article>
     </div></section>`;
 }
@@ -226,7 +239,20 @@ function renderDetail(group, list, slug, listTitle, listFactory, materialMode = 
 
 function renderIndustries() {
   return `${pageHero("Industries", "Recycling services for production sites, infrastructure projects, telecom networks, construction crews, and technical industries.")}
-    <section class="page grid three">${industries.map(i => `<article class="card"><h3>${i}</h3><p>Custom sorting, pickup, reporting, and recovery flows for ${i.toLowerCase()} material streams.</p></article>`).join("")}</section>`;
+    <section class="page grid three">${industries.map(i => `<article class="card"><h3>${i}</h3><p>${industryCopy(i)}</p></article>`).join("")}</section>`;
+}
+
+function industryCopy(industry) {
+  const copy = {
+    Manufacturing: "Helping manufacturers efficiently manage production scrap and maximize recycling value.",
+    Construction: "Processing demolition metals, structural steel, copper piping, and aluminum materials.",
+    Electronics: "Recovery of valuable metals from industrial electronic equipment and manufacturing waste.",
+    Telecommunications: "Cable, equipment, rack, and infrastructure recovery for telecom projects.",
+    Automotive: "Recycling automotive metals including engines, aluminum parts, catalytic converters where applicable, and steel components.",
+    Energy: "Supporting renewable energy, electrical infrastructure, and industrial power projects through responsible recycling solutions.",
+    Infrastructure: "Reliable metal recovery for public works, utilities, maintenance, and large-scale industrial projects."
+  };
+  return copy[industry] || `Custom sorting, pickup, reporting, and recovery flows for ${industry.toLowerCase()} material streams.`;
 }
 
 function renderSustainability() {
@@ -239,9 +265,9 @@ function renderSustainability() {
         <div class="kpi"><strong>24/7</strong><span>Environmental controls mindset</span></div>
       </div>
       <div class="grid three" style="margin-top:24px">
-        <article class="card"><h3>Environmental impact</h3><p>Cleaner separation and high recovery rates help suppliers reduce waste and improve resource efficiency.</p></article>
-        <article class="card"><h3>Compliance & permits</h3><p>Material handling, storage, transport, and downstream processing are managed with documented compliance expectations.</p></article>
-        <article class="card"><h3>ESG initiatives</h3><p>Supplier reports can support sustainability tracking, internal dashboards, and customer disclosures.</p></article>
+        <article class="card"><h3>Environmental responsibility</h3><p>Metal recycling reduces landfill waste, conserves natural resources, and lowers energy consumption compared with primary metal production.</p></article>
+        <article class="card"><h3>Circular economy</h3><p>Recovered metals are processed and returned to manufacturers, creating a continuous cycle of reuse that supports sustainable industry.</p></article>
+        <article class="card"><h3>Our commitment</h3><p>We continuously improve our processes to ensure responsible handling of recyclable materials while maintaining high operational standards.</p></article>
       </div>
     </section>`;
 }
@@ -249,7 +275,7 @@ function renderSustainability() {
 function renderCertifications() {
   return `${pageHero("Certifications", "Documentation, permits, memberships, and quality standards that support responsible recycling.")}
     <section class="page grid four">
-      ${["ISO certificates", "Government permits", "Industry memberships", "Quality standards"].map((title, i) => `<article class="card"><h3>${title}</h3><p>${["ISO-aligned management systems for quality, environment, and operational consistency.", "Permits and local approvals maintained for compliant material handling.", "Participation in recycling and metal trade networks.", "Load inspection, grade control, traceability, and supplier documentation."][i]}</p></article>`).join("")}
+      ${["Quality", "ISO certificates", "Government permits", "Industry memberships"].map((title, i) => `<article class="card"><h3>${title}</h3><p>${["We are committed to maintaining professional standards throughout every stage of the recycling process.", "List ISO certifications here if applicable.", "List permits and local approvals here if applicable.", "List recycling and metal trade memberships here if applicable."][i]}</p></article>`).join("")}
     </section>`;
 }
 
@@ -290,13 +316,33 @@ function renderPrices() {
         </table>
       </div>
       <div class="grid three" style="margin-top:24px">
-        
+        <article class="card"><h3>Configurable endpoint</h3><p>Set <code>window.IR_METALS_PRICE_API_URL</code> before <code>app.js</code> to connect any JSON endpoint.</p></article>
+        <article class="card"><h3>Supported payloads</h3><p>The parser accepts arrays, <code>{ prices: [] }</code>, <code>{ metals: [] }</code>, or simple <code>{ rates: {} }</code> objects.</p></article>
+        <article class="card"><h3>Update limit</h3><p>The frontend cache refreshes after 8 hours, which equals about 90 live updates per month per browser.</p></article>
       </div>
     </section>`;
 }
 
-
-
+function renderCareers() {
+  return `${pageHero("Careers", "Join a practical, safety-focused team moving essential materials back into productive use.")}
+    <section class="page split">
+      <div>
+        <span class="eyebrow">Open positions</span>
+        <h2>Join our team</h2>
+        <p>We are always looking for motivated professionals who share our commitment to safety, quality, and customer service. Whether your experience is in operations, logistics, administration, or management, we'd be happy to hear from you.</p>
+        <h3>Current opportunities</h3>
+        <ul class="check-list">
+          <li>Yard Operations Coordinator</li>
+          <li>Commercial Account Manager</li>
+          <li>Truck Driver</li>
+          <li>Safety & Compliance Assistant</li>
+        </ul>
+        <h3>Benefits</h3>
+        <p>Stable work, practical training, safety equipment, growth paths, and a team that values reliability.</p>
+      </div>
+      ${applicationForm()}
+    </section>`;
+}
 
 function applicationForm() {
   return `<form class="card form">
@@ -311,22 +357,24 @@ function applicationForm() {
 function contactForm() {
   return `<form class="card form">
     <label class="field"><span>Name</span><input type="text" name="name" autocomplete="name"></label>
+    <label class="field"><span>Company</span><input type="text" name="company" autocomplete="organization"></label>
     <label class="field"><span>Email</span><input type="email" name="email" autocomplete="email"></label>
     <label class="field"><span>Phone</span><input type="tel" name="phone" autocomplete="tel"></label>
-    <label class="field"><span>Material or service</span><input type="text" name="subject"></label>
+    <label class="field"><span>Material Type</span><input type="text" name="material"></label>
+    <label class="field"><span>Estimated Quantity</span><input type="text" name="quantity"></label>
     <label class="field"><span>Message</span><textarea name="message"></textarea></label>
-    <button class="btn primary" type="submit">Send Message</button>
+    <button class="btn primary" type="submit">Send Inquiry</button>
   </form>`;
 }
 
 function renderContact() {
-  return `${pageHero("Contact", "Tell us what material you have, where it is located, and when it needs to move.")}
+  return `${pageHero("Contact", "Whether you need regular scrap collection, industrial recycling services, or a quotation for recyclable metals, our team is ready to help.")}
     <section class="page split">
       <div>
         <div class="map" aria-label="Interactive map placeholder"><div class="map-pin"><span>IR</span></div></div>
         <div class="grid three" style="margin-top:18px">
-          <article class="card"><h3>Phone</h3><p>+972 54 422 2337</p></article>
-          <article class="card"><h3>Email</h3><p>doron@irmetals.com</p></article>
+          <article class="card"><h3>Call Us</h3><p>+972 54 422 2337</p></article>
+          <article class="card"><h3>Email Us</h3><p>doron@irmetals.com</p></article>
           <article class="card"><h3>WhatsApp</h3><p>Fast quote photos and pickup requests.</p></article>
         </div>
       </div>

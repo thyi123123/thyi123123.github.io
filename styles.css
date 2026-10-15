@@ -679,7 +679,7 @@ textarea {
 
 .site-footer {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1.3fr auto auto auto;
   gap: 28px;
   padding: 34px clamp(18px, 4vw, 56px);
   background: var(--ink);
@@ -695,6 +695,14 @@ textarea {
   display: block;
   color: var(--white);
   font-weight: 800;
+}
+
+.copyright {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 0.9rem;
 }
 
 @media (max-width: 920px) {
